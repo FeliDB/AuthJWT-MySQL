@@ -68,11 +68,35 @@ export class AuthController {
 
 
     @Post('forgot-password')
+    @ApiOperation({ summary: 'Request password reset' })
+    @ApiResponse({ status: 200, description: 'Password reset link sent to email.' })
+    @ApiResponse({ status: 401, description: 'User not found.' })
+    @ApiCreatedResponse({
+        description: 'Password reset token generated successfully.',
+        schema: {
+            example: {
+                message: "Password reset link sent to your email",
+                resetToken: "a4cde48703897d8ead65ac7b5432b6d3f1d6ca0465f7a8bd12f11127d3e7fe96",
+                resetUrl: "http://localhost:5173/reset-password?token=a4cde48703897d8ead65ac7b5432b6d3f1d6ca0465f7a8bd12f11127d3e7fe96&email=user@example.com"
+            }
+        }
+    })
     async forgotPassword(@Body('email') email: string) {
         return this.authService.requestPasswordReset(email);
     }
 
     @Post('reset-password')
+    @ApiOperation({ summary: 'Reset password with token' })
+    @ApiResponse({ status: 200, description: 'Password has been successfully reset.' })
+    @ApiResponse({ status: 401, description: 'Invalid or expired token.' })
+    @ApiCreatedResponse({
+        description: 'Password reset completed.',
+        schema: {
+            example: {
+                message: "Password successfully updated"
+            }
+        }
+    })
     async resetPassword(@Body('email') email: string, @Body('token') token: string, @Body('newPassword') newPassword: string) {
         return this.authService.resetPassword(email, token, newPassword);
     }

@@ -13,7 +13,7 @@ import { TokenHelper } from './helpers/token.helper';
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       global: true,
-      secret: process.env.JWT_SECRET || 'default-secret-key',
+      secret: process.env.JWT_SECRET || 'patch',
       signOptions: { expiresIn: '1h' },
     }),
   ],

@@ -1,13 +1,17 @@
-import { Body, Controller, Param, Post } from "@nestjs/common";
+import { Body, Controller, Param, Post, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { CreateUserDto } from "./dtos/create-user.dto";
 import { LoginDto } from "./dtos/login.dto";
 import { IdPipe } from "./pipes/id.pipe";
+import { Roles } from "./decorators/role.decorator";
+import { Role } from "./enums/roles.enum";
+import { AuthGuard } from "./guards/auth.guard";
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
+    
     @Post('register')
     async register(@Body() createUserDTO: CreateUserDto) {
         return this.authService.registerService(createUserDTO);

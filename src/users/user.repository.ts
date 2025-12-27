@@ -4,6 +4,8 @@ import { Repository } from "typeorm";
 import { User } from "./user.entity";
 import { CreateUserDto } from "./dtos/create-user.dto";
 import { RegisterMapper } from "./mappers/register.mapper";
+import { LoginDto } from "./dtos/login.dto";
+import { LoginMapper } from "./mappers/login.mapper";
 
 @Injectable()
 export class UserRepository{
@@ -17,5 +19,11 @@ export class UserRepository{
     async registerRepository(createUserDTO: CreateUserDto): Promise<User>{
         const user = await RegisterMapper.toEntity(createUserDTO);
         return this.userRepository.save(user);
+    }
+
+    async loginRepository(loginDTO: LoginDto): Promise<User | null>{
+        const user = await LoginMapper.toEntity(loginDTO);
+        await this.userRepository.findOne({ where: { email: user.email, password: user.password } });
+        return user;
     }
 }

@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { AuthRepository } from './auth.repository';
 import { IsUniqueValidator } from './validators/unique.validator';
 import { TokenHelper } from './helpers/token.helper';
+import { MailService } from 'src/mail/mail.service';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { TokenHelper } from './helpers/token.helper';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthRepository, IsUniqueValidator, TokenHelper],
+  providers: [AuthService, AuthRepository, IsUniqueValidator, TokenHelper, MailService],
   exports: [AuthService],
   
 })

@@ -7,6 +7,8 @@ import { RegisterMapper } from "./mappers/register.mapper";
 import { LoginDto } from "./dtos/login.dto";
 import { LoginMapper } from "./mappers/login.mapper";
 import * as bcrypt from 'bcrypt';
+import { ResetPasswordRequestMapper } from "./mappers/reset-password-request.mapper";
+import { UpdatePasswordMapper } from "./mappers/update-password.mapper";
 
 @Injectable()
 export class AuthRepository{
@@ -33,5 +35,16 @@ export class AuthRepository{
 
     async logOffRepository(userId: number): Promise<void>{
         await this.userRepository.update(userId, { activeFlag: false });
+    }
+
+    async saveResetPasswordToken(user: User, hashedToken: string, expires: Date): Promise<void>{
+        user = ResetPasswordRequestMapper.toEntity(user, hashedToken, expires);
+        await this.userRepository.save(user);
+    }
+
+
+    async updatePasswordRepository(user: User, newPassword: string): Promise<void>{
+        user = UpdatePasswordMapper.toEntity(user, newPassword);
+        await this.userRepository.save(user);
     }
 }

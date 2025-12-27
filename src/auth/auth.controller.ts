@@ -64,4 +64,16 @@ export class AuthController {
     async logOff(@Param('userId', IdPipe) userId: number) {
         return this.authService.logOffService(userId);
     }
+
+
+
+    @Post('forgot-password')
+    async forgotPassword(@Body('email') email: string) {
+        return this.authService.requestPasswordReset(email);
+    }
+
+    @Post('reset-password')
+    async resetPassword(@Body('email') email: string, @Body('token') token: string, @Body('newPassword') newPassword: string) {
+        return this.authService.resetPassword(email, token, newPassword);
+    }
 }
